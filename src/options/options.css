@@ -25,3 +25,6 @@
 #remove {
     float: right;
 }
+.hide {
+	display: none;
+}

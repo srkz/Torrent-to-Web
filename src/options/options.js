@@ -138,6 +138,9 @@ function clearForm () {
     document.querySelector('#password').value = '';
     document.querySelector('#magnet').checked = false;
     document.querySelector('#autostart').checked = false;
+	document.querySelector('#cfaccesstoken').checked = false;
+	document.querySelector('#cfAccessClientID').value = '';
+	document.querySelector('#cfAccessClientSecret').value = '';	
     nameChanged();
 }
 
@@ -153,6 +156,9 @@ function showProfile (name) {
     document.querySelector('#password').value = profile.password || '';
     document.querySelector('#magnet').checked = profile.magnet || false;
     document.querySelector('#autostart').checked = profile.autostart || false;
+	document.querySelector('#cfaccesstoken').checked = profile.cfaccesstoken || false;
+	document.querySelector('#cfAccessClientID').value = profile.cfAccessClientID || '';
+	document.querySelector('#cfAccessClientSecret').value = profile.cfAccessClientSecret || '';
 
     if (name != oldName) {
         nameChanged();
@@ -165,6 +171,14 @@ function showProfile (name) {
     if (profile.url != oldUrl) {
         urlChanged();
     }
+	
+	if (profile.cfaccesstoken == false) {
+		var cfag = document.getElementsByClassName('cfaccessgroup')[0];
+		cfag.classList.add('hide');		
+	} else {
+		var cfag = document.getElementsByClassName('cfaccessgroup')[0];
+		cfag.classList.remove('hide');		
+	}
 }
 
 function saveOptions (event) {
@@ -184,6 +198,9 @@ function saveOptions (event) {
         password: document.querySelector('#password').value,
         magnet: document.querySelector('#magnet').checked,
         autostart: document.querySelector('#autostart').checked,
+		cfaccesstoken: document.querySelector('#cfaccesstoken').checked,
+		cfAccessClientID: document.querySelector('#cfAccessClientID').value,
+		cfAccessClientSecret: document.querySelector('#cfAccessClientSecret').value		
     };
     browser.storage.local.set(profiles).then(() => {
         if (! already) {
@@ -229,12 +246,20 @@ function testProfile (event) {
                     username: document.querySelector('#username').value,
                     password: document.querySelector('#password').value,
                     autostart: document.querySelector('#autostart').checked,
+					cfAccessClientID: document.querySelector('#cfAccessClientID').value,
+					cfAccessClientSecret: document.querySelector('#cfAccessClientSecret').value,
                     data: blob,
                 },
             };
             browser.runtime.sendMessage(msg);
         });
     });
+}
+
+document.getElementById('cfaccesstoken').onchange = function(){
+	var cfag = document.getElementsByClassName('cfaccessgroup')[0];
+	if (this.checked) cfag.classList.remove('hide');
+	else cfag.classList.add('hide');
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);

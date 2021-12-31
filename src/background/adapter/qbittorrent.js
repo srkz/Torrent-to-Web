@@ -1,6 +1,6 @@
 'use strict';
 
-torrentToWeb.adapter.qbittorrent = function (baseUrl, username, password, autostart) {
+torrentToWeb.adapter.qbittorrent = function (baseUrl, username, password, autostart, cfAccessClientID, cfAccessClientSecret) {
     let baseUrlObject = new URL(baseUrl);
     baseUrlObject.pathname = '/api/v2';
 
@@ -13,11 +13,15 @@ torrentToWeb.adapter.qbittorrent = function (baseUrl, username, password, autost
         let requestData = new URLSearchParams();
         requestData.append('username', username);
         requestData.append('password', password);
+		let requestHeaders = new Headers();
+		requestHeaders.set('CF-Access-Client-Id', cfAccessClientID);
+		requestHeaders.set('CF-Access-Client-Secret', cfAccessClientSecret);
 
         return new Promise((resolve, reject) => {
             fetch(baseUrl + '/auth/login', {
                 method: 'POST',
                 credentials: 'omit',
+				headers: requestHeaders,
                 body: requestData,
             }).then((response) => {
                 if (response.ok) {
@@ -37,9 +41,14 @@ torrentToWeb.adapter.qbittorrent = function (baseUrl, username, password, autost
     }
 
     function logout () {
+		let requestHeaders = new Headers();
+		requestHeaders.set('CF-Access-Client-Id', cfAccessClientID);
+		requestHeaders.set('CF-Access-Client-Secret', cfAccessClientSecret);
+		
         return new Promise((resolve, reject) => {
             fetch(baseUrl + '/auth/logout', {
                 method: 'POST',
+				headers: requestHeaders,
             }).finally(() => {
                 sessionCookie = null;
                 removeFilter();
@@ -78,10 +87,11 @@ torrentToWeb.adapter.qbittorrent = function (baseUrl, username, password, autost
         }
     };
 
-    function sendAddRequest (requestData) {
+    function sendAddRequest (requestData) {	
         return new Promise((resolve, reject) => {
             fetch(baseUrl + '/torrents/add', {
                 method: 'POST',
+				headers: requestHeaders,
                 body: requestData,
             }).then((response) => {
                 if (response.ok) {

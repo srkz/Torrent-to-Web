@@ -50,7 +50,7 @@
                             <input type="password" class="form-control" id="password">
                             <span class="vtoggle">Show</span>
                         </div>
-
+						
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" id="magnet"> Use for left-click on magnet links
@@ -60,7 +60,19 @@
                             <label>
                                 <input type="checkbox" id="autostart"> Autostart torrents
                             </label>
-                        </div>
+                        </div>				
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="cfaccesstoken"> Use Cloudflare Access Service token
+                            </label>
+                        </div>		
+
+                        <div class="form-group cfaccessgroup hide">
+                            <label for="cfAccessClientID">Cloudflare Access Client ID</label>
+                            <input type="text" class="form-control" id="cfAccessClientID">
+                            <label for="cfAccessClientSecret">Cloudflare Access Client Secret</label>
+                            <input type="text" class="form-control" id="cfAccessClientSecret">
+                        </div>							
 
                         <button type="submit" id="save" disabled="disabled">Save</button>
                         <button disabled="disabled" id="test">Test</button>

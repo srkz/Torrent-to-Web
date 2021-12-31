@@ -101,7 +101,9 @@ torrentToWeb.createAdapter = function (nid, callback) {
                     p.url,
                     p.username,
                     p.password,
-                    p.autostart
+                    p.autostart,					
+					p.cfAccessClientID,
+					p.cfAccessClientSecret
                 ));
 
                 // If this was a left-click, do not return but
@@ -256,7 +258,9 @@ browser.runtime.onMessage.addListener(function (msg) {
             msg.test.url,
             msg.test.username,
             msg.test.password,
-            msg.test.autostart,
+            msg.test.autostart,			
+			msg.test.cfAccessClientID,
+			msg.test.cfAccessClientSecret
         );
         adapter.send('test.torrent', msg.test.data, function (success) {
             if (typeof success === 'boolean') {
